@@ -9,3 +9,44 @@
 2020-07-30 17:18:03.801  INFO 19380 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
 2020-07-30 17:18:04.111  INFO 19380 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
 2020-07-30 17:18:04.122  INFO 19380 --- [main] com.lxr.studydemo.StudydemoApplication   : Started StudydemoApplication in 2.327 seconds (JVM running for 4.24)
+2020-07-30 18:46:18.512  INFO 19840 --- [main] com.lxr.studydemo.StudydemoApplication   : Starting StudydemoApplication on LAPTOP-EOJ0VOHH with PID 19840 (D:\MyCode\studydemo\target\classes started by lenovo in D:\MyCode\studydemo)
+2020-07-30 18:46:18.515  INFO 19840 --- [main] com.lxr.studydemo.StudydemoApplication   : No active profile set, falling back to default profiles: default
+2020-07-30 18:46:19.055  WARN 19840 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.lxr.studydemo]' package. Please check your configuration.
+2020-07-30 18:46:19.480  INFO 19840 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
+2020-07-30 18:46:19.487  INFO 19840 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 18:46:19.488  INFO 19840 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
+2020-07-30 18:46:19.601  INFO 19840 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 18:46:19.601  INFO 19840 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1034 ms
+2020-07-30 18:46:19.648  WARN 19840 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'helloWorldController': Unsatisfied dependency expressed through field 'service'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'helloWorldService': Unsatisfied dependency expressed through field 'mapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.lxr.studydemo.dao.HelloWorldMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2020-07-30 18:46:19.650  INFO 19840 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2020-07-30 18:46:19.676  INFO 19840 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-07-30 18:46:19.769 ERROR 19840 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field mapper in com.lxr.studydemo.service.HelloWorldService required a bean of type 'com.lxr.studydemo.dao.HelloWorldMapper' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.lxr.studydemo.dao.HelloWorldMapper' in your configuration.
+
+2020-07-30 18:50:08.720  INFO 19920 --- [main] com.lxr.studydemo.StudydemoApplication   : Starting StudydemoApplication on LAPTOP-EOJ0VOHH with PID 19920 (D:\MyCode\studydemo\target\classes started by lenovo in D:\MyCode\studydemo)
+2020-07-30 18:50:08.723  INFO 19920 --- [main] com.lxr.studydemo.StudydemoApplication   : No active profile set, falling back to default profiles: default
+2020-07-30 18:50:09.733  INFO 19920 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
+2020-07-30 18:50:09.741  INFO 19920 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-30 18:50:09.742  INFO 19920 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
+2020-07-30 18:50:09.862  INFO 19920 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-30 18:50:09.862  INFO 19920 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1082 ms
+2020-07-30 18:50:10.230  INFO 19920 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-30 18:50:10.377  INFO 19920 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
+2020-07-30 18:50:10.385  INFO 19920 --- [main] com.lxr.studydemo.StudydemoApplication   : Started StudydemoApplication in 2.25 seconds (JVM running for 4.151)
