@@ -9,12 +9,13 @@ public class Easy {
     /**
      * 1. 两数之和
      * 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 的那两个整数，并返回它们的数组下标。
-     *
+     * <p>
      * 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
-     *
+     * <p>
      * 你可以按任意顺序返回答案。
-     *
+     * <p>
      * 空间复杂度O(n) 时间复杂度O(n)
+     *
      * @param nums
      * @param target
      * @return
@@ -33,7 +34,7 @@ public class Easy {
 
     @Test
     public void testTwoSum() {
-        int[] nums = {2,7,11,15};
+        int[] nums = {2, 7, 11, 15};
         int target = 9;
         Arrays.stream(twoSum(nums, target)).forEach(System.out::println);
     }
@@ -41,9 +42,9 @@ public class Easy {
     /**
      * 7. 整数反转
      * 给你一个 32 位的有符号整数 x ，返回 x 中每位上的数字反转后的结果。
-     *
+     * <p>
      * 如果反转后整数超过 32 位的有符号整数的范围[−231, 231− 1] ，就返回 0。
-     *
+     * <p>
      * 假设环境不允许存储 64 位整数（有符号或无符号）。
      *
      * @param x
@@ -82,10 +83,10 @@ public class Easy {
         int res = 0;
         while (x != 0) {
             int pop = x % 10;
-            if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && pop > Integer.MAX_VALUE % 10)){
+            if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && pop > Integer.MAX_VALUE % 10)) {
                 return 0;
             }
-            if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && pop < Integer.MIN_VALUE % 10)){
+            if (res < Integer.MIN_VALUE / 10 || (res == Integer.MIN_VALUE / 10 && pop < Integer.MIN_VALUE % 10)) {
                 return 0;
             }
             res = res * 10 + x % 10;
@@ -102,9 +103,9 @@ public class Easy {
 
     /**
      * 9. 回文数
-     *
+     * <p>
      * 给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。
-     *
+     * <p>
      * 回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，121 是回文，而 123 不是。
      *
      * @param x
@@ -173,5 +174,70 @@ public class Easy {
         System.out.println(isPalindrome(1432341));
         System.out.println(isPalindrome1(1432341));
         System.out.println(isPalindrome2(1432341));
+    }
+
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    /**
+     * 101. 对称二叉树
+     * 给定一个二叉树，检查它是否是镜像对称的。
+     * 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+     *     1
+     *    / \
+     *   2   2
+     *  / \ / \
+     * 3  4 4  3
+     * @param root
+	 * @return boolean
+     */
+    public boolean isSymmetric(TreeNode root) {
+        //考虑递归的方法
+        //初始条件   左子树与右子树镜像
+        //递归条件   左左子树与右右子树 && 左右子树与右左子树镜像
+        //结束条件   左右节点都为null || 不等
+        if (root == null) {
+            return true;
+        }
+        return isMirror(root.left, root.right);
+        //考虑把初始条件转换为递归条件
+//        return isMirror(root, root);
+    }
+
+    private boolean isMirror(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left == null || right == null || left.val != right.val) {
+            return false;
+        }
+        return isMirror(left.left, right.right) && isMirror(left.right, right.left);
+    }
+
+    @Test
+    public void testIsSymmetric() {
+        TreeNode leftLeaf = new TreeNode(3);
+        TreeNode rightLeaf = new TreeNode(2);
+        TreeNode left = new TreeNode(4, leftLeaf, rightLeaf);
+        TreeNode right = new TreeNode(4, rightLeaf, leftLeaf);
+        TreeNode root = new TreeNode(5, left, right);
+        System.out.println(isSymmetric(root));
     }
 }
