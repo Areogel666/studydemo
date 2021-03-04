@@ -231,6 +231,32 @@ public class Easy {
         return isMirror(left.left, right.right) && isMirror(left.right, right.left);
     }
 
+    public boolean isSymmetric2(TreeNode root) {
+        //迭代  递归——>迭代：考虑使用队列
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root == null) return true;
+        queue.offer(root.right);
+        queue.offer(root.left);
+        while (!queue.isEmpty()) {
+            TreeNode left = queue.poll();
+            TreeNode right = queue.poll();
+            if (left == null && right == null) {
+                continue;
+            }
+            if (left == null || right == null) {
+                return false;
+            }
+            if (left.val != right.val) {
+                return false;
+            }
+            queue.offer(right.right);
+            queue.offer(left.left);
+            queue.offer(right.left);
+            queue.offer(left.right);
+        }
+        return true;
+    }
+
     @Test
     public void testIsSymmetric() {
         TreeNode leftLeaf = new TreeNode(3);
@@ -239,5 +265,44 @@ public class Easy {
         TreeNode right = new TreeNode(4, rightLeaf, leftLeaf);
         TreeNode root = new TreeNode(5, left, right);
         System.out.println(isSymmetric(root));
+        System.out.println(isSymmetric2(root));
     }
+
+    /**
+     * 26. 删除排序数组中的重复项
+     * 给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+     *
+     * 不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+     * 给定 nums = [0,0,1,1,1,2,2,3,3,4],
+     *
+     * 函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
+     *
+     * 你不需要考虑数组中超出新长度后面的元素。
+     * @param nums
+	 * @return int
+     * @author Areogel
+     * @date 2021/3/4 15:23
+     */
+    public int removeDuplicates(int[] nums) {
+        //有序数组，考虑双指针法：
+        //思路1：考虑快指针，当取值与慢指针对应的值相等时，快指针++，直到不等时慢指针++
+        //思路2：考虑慢指针，当取值不等时，慢指针++
+        if (nums.length == 0) return 0;
+        int preIndex = 0;
+        for (int curIndex = 1; curIndex < nums.length; curIndex++) {
+            while (nums[preIndex] == nums[curIndex]) {
+                if (++curIndex == nums.length) { //如果最后一个数字重复，判断快指针是否小于长度，如果等于长度，直接返回当前慢指针
+                    return preIndex + 1;
+                }
+            }
+            nums[++preIndex] = nums[curIndex];
+        }
+        return preIndex + 1;
+    }
+
+    @Test
+    public void testRemoveDuplicates() {
+        System.out.println(removeDuplicates(new int[]{0,4,4}));
+    }
+
 }
