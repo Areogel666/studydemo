@@ -201,13 +201,14 @@ public class Easy {
      * 101. 对称二叉树
      * 给定一个二叉树，检查它是否是镜像对称的。
      * 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-     *     1
-     *    / \
-     *   2   2
-     *  / \ / \
+     * 1
+     * / \
+     * 2   2
+     * / \ / \
      * 3  4 4  3
+     *
      * @param root
-	 * @return boolean
+     * @return boolean
      */
     public boolean isSymmetric(TreeNode root) {
         //考虑递归的方法
@@ -272,15 +273,16 @@ public class Easy {
     /**
      * 26. 删除排序数组中的重复项
      * 给定一个排序数组，你需要在 原地 删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
-     *
+     * <p>
      * 不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
      * 给定 nums = [0,0,1,1,1,2,2,3,3,4],
-     *
+     * <p>
      * 函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-     *
+     * <p>
      * 你不需要考虑数组中超出新长度后面的元素。
+     *
      * @param nums
-	 * @return int
+     * @return int
      * @author Areogel
      * @date 2021/3/4 15:23
      */
@@ -303,15 +305,15 @@ public class Easy {
 
     @Test
     public void testRemoveDuplicates() {
-        System.out.println(removeDuplicates(new int[]{0,4,4}));
+        System.out.println(removeDuplicates(new int[]{0, 4, 4}));
     }
 
 
     /**
      * 88. 合并两个有序数组
-     *
+     * <p>
      * 给你两个有序整数数组nums1 和 nums2，请你将 nums2 合并到nums1中，使 nums1 成为一个有序数组。
-     *
+     * <p>
      * 初始化nums1 和 nums2 的元素数量分别为m 和 n 。你可以假设nums1 的空间大小等于 m + n，这样它就有足够的空间保存来自 nums2 的元素。
      *
      * @param nums1
@@ -329,7 +331,7 @@ public class Easy {
                 nums1[i] = nums2[num2++];
                 continue;
             }
-            if (num2 ==  n) {
+            if (num2 == n) {
                 nums1[i] = array[num1++];
                 continue;
             }
@@ -357,13 +359,76 @@ public class Easy {
     @Test
     public void testMerge() {
         AtomicInteger i = new AtomicInteger();
-        int[] array1 = new int[]{4,5,6,0,0,0};
-        int[] array2 = new int[]{1,2,3};
+        int[] array1 = new int[]{4, 5, 6, 0, 0, 0};
+        int[] array2 = new int[]{1, 2, 3};
 //        int[] array2 = IntStream.generate(() -> (int)(Math.random() * 100)).limit(8).sorted().toArray();
 //        merge(array1, 3, array2, 3);
         merge1(array1, 3, array2, 3);
         Arrays.stream(array1).forEach(System.out::println);
     }
 
+    class ListNode {
+        int val;
+        ListNode next;
 
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    /**
+     * 206. 反转链表
+     * 输入: 1->2->3->4->5->NULL
+     * 输出: 5->4->3->2->1->NULL
+     * 进阶:你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
+     *
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+        //递归操作 ——> 下个节点next指向本节点, 本节点next指向null
+        //head == null主要是判断第一个节点是空的情况，head.next == null是递归条件
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode listNode = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return listNode;
+    }
+
+    public ListNode reverseList1(ListNode head) {
+        //迭代
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
+    @Test
+    public void testReverseList() {
+        ListNode node4 = new ListNode(4, null);
+        ListNode node3 = new ListNode(3, node4);
+        ListNode node2 = new ListNode(2, node3);
+        ListNode node1 = new ListNode(1, node2);
+//        ListNode listNode = reverseList(node1);
+        ListNode listNode = reverseList1(node1);
+        while (listNode != null) {
+            System.out.println(listNode.val);
+            listNode = listNode.next;
+        }
+    }
 }
