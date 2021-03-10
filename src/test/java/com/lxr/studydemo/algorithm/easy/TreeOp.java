@@ -13,7 +13,7 @@ import java.util.Queue;
  * @Date 2021/3/10 13:13
  * @Version 1.0
  */
-public class Tree {
+public class TreeOp {
     class TreeNode {
         int val;
         TreeNode left;
@@ -126,8 +126,15 @@ public class Tree {
      *
      */
     public int maxDepth(TreeNode root) {
+        // 深度分析 递归
+        // 最大深度 = max(左子树深度, 右子树深度)
+        if (root == null) return 0;
 
-        return 0;
+        return maxDepth0(root);
+    }
+
+    private int maxDepth0(TreeNode node) {
+        return Math.max(maxDepth0(node.left), maxDepth0(node.right));
     }
 
     @Test

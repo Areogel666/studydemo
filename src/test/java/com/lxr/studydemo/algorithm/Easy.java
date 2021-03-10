@@ -364,4 +364,6 @@ public class Easy {
         merge1(array1, 3, array2, 3);
         Arrays.stream(array1).forEach(System.out::println);
     }
+
+
 }
