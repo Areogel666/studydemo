@@ -126,19 +126,41 @@ public class TreeOp {
      *
      */
     public int maxDepth(TreeNode root) {
-        // 深度分析 递归
-        // 最大深度 = max(左子树深度, 右子树深度)
+        // 深度优先搜索 递归
+        // 最大深度 = max(左子树深度, 右子树深度) + 1
         if (root == null) return 0;
-
-        return maxDepth0(root);
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 
-    private int maxDepth0(TreeNode node) {
-        return Math.max(maxDepth0(node.left), maxDepth0(node.right));
+    public int maxDepth1(TreeNode root) {
+        // 广度优先搜索 队列
+        if (root == null) return 0;
+        int res = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {// 队列不为空时，循环
+            int size = queue.size();
+            while (size-- > 0) {// 当本层循环父节点数大于0时，继续查找非空子节点，并放入队列中
+                TreeNode poll = queue.poll();
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+            }
+            res++;// 完成一层循环，树高加1
+        }
+        return res;
     }
 
     @Test
     public void testMaxDepth() {
-
+        TreeNode leftLeaf = new TreeNode(15);
+        TreeNode rightLeaf = new TreeNode(7);
+        TreeNode left = new TreeNode(9);
+        TreeNode right = new TreeNode(20, leftLeaf, rightLeaf);
+        TreeNode root = new TreeNode(3, left, right);
+        System.out.println(maxDepth1(root));
     }
 }
