@@ -1,6 +1,5 @@
 package com.lxr.studydemo.algorithm.easy;
 
-import com.lxr.studydemo.algorithm.Easy;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

@@ -1,9 +1,10 @@
 package com.lxr.studydemo.algorithm.easy;
 
-import com.lxr.studydemo.algorithm.Easy;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -162,5 +163,209 @@ public class TreeOp {
         TreeNode right = new TreeNode(20, leftLeaf, rightLeaf);
         TreeNode root = new TreeNode(3, left, right);
         System.out.println(maxDepth1(root));
+    }
+
+    /**
+     * 剑指 Offer 68 - II. 二叉树的最近公共祖先
+     * 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+     *
+     * 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+     *
+     * 例如，给定如下二叉树: root =[3,5,1,6,2,0,8,null,null,7,4]
+     *
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        //考虑递归:
+        // 1.递归左右子树，查找节点，查找到返回上一层，查找不到返回null
+        // 2.如果此节点等于p或q，说明最近公共祖先是此节点或其祖先节点，因此直接返回递归
+        // 3.如果返回的左右子节点都有值，说明两个节点在此节点左右两边，则此节点为最近公共祖先
+        // 4.如果一边返回结果，说明要么返回节点是最近公共祖先，要么最近公共祖先还在祖先节点，因此继续返回
+        // 5.如果两边都返回null，说明父节点下未找到给定节点，继续向上递归
+        if (root == null) return null;
+        if (root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if (left == null) return right;
+        if (right == null) return left;
+        return root;
+    }
+
+    /**
+     * 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+     * 例如:
+     *      给定二叉树:[3,9,20,null,null,15,7],
+     *      3
+     *      / \
+     *      9  20
+     *      /  \
+     *      15   7
+     *      返回：
+     *      [3,9,20,15,7]
+     * @param root
+     * @return
+     */
+    public int[] levelOrder(TreeNode root) {
+        //BFS
+        if (root == null) return new int[0];
+        List<Integer> resList = new ArrayList<>(); // 由于后面遍历打印，考虑存在ArrayList
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            resList.add(node.val);
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        int[] array = new int[resList.size()];
+        for (int i = 0; i < resList.size(); i++) {
+            array[i] = resList.get(i);
+        }
+        return array;
+    }
+
+    /**
+     * 103. 二叉树的锯齿形层序遍历
+     * 给定一个二叉树，返回其节点值的锯齿形层序遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+     * 例如：
+     * 给定二叉树[3,9,20,null,null,15,7],
+     *     3
+     *    / \
+     *   9  20
+     *     /  \
+     *    15   7
+     * 返回锯齿形层序遍历如下：
+     * [
+     *   [3],
+     *   [20,9],
+     *   [15,7]
+     * ]
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrderReverse(TreeNode root) {
+        //BFS
+        List<List<Integer>> resList = new LinkedList<>();
+        if (root == null) return resList;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int treeHigh = 0;
+        while (!queue.isEmpty()) {
+            List<Integer> curLevelList = new LinkedList<>();//也可以考虑使用Deque
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                //还是从队列中取值，但是放入结果链表的时候分别头插尾插
+                if (treeHigh % 2 == 1) {
+                    curLevelList.add(0, node.val);
+                } else {
+                    curLevelList.add(node.val);
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+            resList.add(curLevelList);
+            treeHigh++;
+        }
+        return resList;
+    }
+
+    /**
+     * 102. 二叉树的层序遍历
+     * 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+     * 示例：
+     * 二叉树：[3,9,20,null,null,15,7],
+     *     3
+     *    / \
+     *   9  20
+     *     /  \
+     *    15   7
+     * 返回其层序遍历结果：
+     * [
+     *   [3],
+     *   [9,20],
+     *   [15,7]
+     * ]
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrderEveryLevel(TreeNode root) {
+        // BFS 广度优先搜索
+        // 使用队列，将待遍历节点放入队列，完成遍历出队列，直到队列为空遍历完成
+        // 增加一个内层循环，存储本层遍历的所有结果，遍历queue.size()次
+        List<List<Integer>> resList = new LinkedList<>();
+        if (root == null) return resList;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> curLevelList = new ArrayList<>();
+            int size = queue.size(); //本层节点个数
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                curLevelList.add(node.val); //存入本层节点
+                if (node.left != null) {
+                    queue.add(node.left); //向队列中加入下一层节点
+                }
+                if (node.right != null) {
+                    queue.add(node.right); //向队列中加入下一层节点
+                }
+            }
+            resList.add(curLevelList);
+        }
+        return resList;
+    }
+
+    /**
+     * 107. 二叉树的层序遍历 II
+     * 给定一个二叉树，返回其节点值自底向上的层序遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+     * 例如：
+     * 给定二叉树 [3,9,20,null,null,15,7],
+     *     3
+     *    / \
+     *   9  20
+     *     /  \
+     *    15   7
+     * 返回其自底向上的层序遍历为：
+     * [
+     *   [15,7],
+     *   [9,20],
+     *   [3]
+     * ]
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrderEveryLevelBottom(TreeNode root) {
+        //考虑使用普通BFS
+        List<List<Integer>> resList = new LinkedList<>(); //使用链表尾插
+        if (root == null) return resList;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> curLevelList = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                curLevelList.add(node.val); //存入本层节点
+                if (node.left != null) {
+                    queue.add(node.left); //向队列中加入下一层节点
+                }
+                if (node.right != null) {
+                    queue.add(node.right); //向队列中加入下一层节点
+                }
+            }
+            resList.add(0, curLevelList);
+        }
+        return resList;
     }
 }
