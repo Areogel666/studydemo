@@ -2,10 +2,7 @@ package com.lxr.studydemo.algorithm.easy;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @ClassName Tree
@@ -365,6 +362,137 @@ public class TreeOp {
                 }
             }
             resList.add(0, curLevelList);
+        }
+        return resList;
+    }
+
+    /**
+     * 145. 二叉树的后序遍历
+     * 给定一个二叉树，返回它的 后序遍历。
+     * 示例:
+     * 输入: [1,null,2,3]
+     *    1
+     *     \
+     *      2
+     *     /
+     *    3
+     *
+     * 输出: [3,2,1]
+     * 进阶:递归算法很简单，你可以通过迭代算法完成吗？
+     * @param root
+     * @return
+     */
+    public List<Integer> allOrderTraversal(TreeNode root) {
+        //dfs 深度优先搜索 ——> 利用栈 ——> 递归
+        List<Integer> resList = new LinkedList<>();
+        if (root == null) {
+            return resList;
+        }
+        allOrderTraversalDfs(root, resList);
+        return resList;
+    }
+
+    private void allOrderTraversalDfs(TreeNode root, List<Integer> resList) {
+        if (root == null) return;
+        // 前序遍历：先遍历根节点，然后左子树，最后右子树
+//        resList.add(root.val);
+//        postorderTraversalDfs(root.left, resList);
+//        postorderTraversalDfs(root.right, resList);
+        // 中序遍历：先遍历左子树，然后根节点，最后右子树
+//        postorderTraversalDfs(root.left, resList);
+//        resList.add(root.val);
+//        postorderTraversalDfs(root.right, resList);
+        // 后序遍历：先遍历左子树，然后右子树，最后根节点
+        allOrderTraversalDfs(root.left, resList);
+        allOrderTraversalDfs(root.right, resList);
+        resList.add(root.val);
+    }
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        //前序遍历 根左右
+        List<Integer> resList = new LinkedList<>();
+        if (root == null) {
+            return resList;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) { //循环至左下没有元素为止
+                resList.add(root.val); //先放入元素
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop(); //压栈
+            root = root.right; //此时循环上一层右子树
+        }
+        return resList;
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //中序遍历 左根右
+        List<Integer> resList = new LinkedList<>();
+        if (root == null) {
+            return resList;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left; //仍然是向左下搜索，与前序的区别是只搜索不存入resList
+            }
+            //直到搜到最左下节点，再存入resList
+            root = stack.pop();
+            resList.add(root.val);
+            root = root.right; //最后搜寻右侧
+        }
+        return resList;
+    }
+
+    public List<Integer> postorderTraversal(TreeNode root) {
+        //后序遍历 左右根
+        //考虑翻转，根右左，与前序相似，只不过先搜索右下
+        List<Integer> resList = new LinkedList<>();
+        if (root == null) {
+            return resList;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                resList.add(root.val);
+                stack.push(root);
+                root = root.right; // 先搜索右下节点
+            }
+            root = stack.pop(); //压栈
+            root = root.left;
+        }
+        Collections.reverse(resList);
+        return resList;
+    }
+
+    public List<Integer> postorderTraversal1(TreeNode root) {
+        // 后序 左右根 dfs 深度优先搜索 ——> 利用栈 ——> 如果使用迭代，则利用显式栈
+        // 不考虑取巧的方式
+        List<Integer> resList = new LinkedList<>();
+        if (root == null) {
+            return resList;
+        }
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode prev = null;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) { //循环结束保证左节点为null
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.peek(); //由于最后打印根，所以只有当节点所有左右子树都搜索完成后才能pop。因此此处使用peek获得栈首元素。
+            //保证右节点为null，此时可存值压栈
+            //注：root.right == prev这个条件，保证右子节点已存储的情况下，直接存储根节点
+            if (root.right == null || root.right == prev) {
+                resList.add(root.val);
+                stack.pop(); //此时压栈后，栈中首元素是上一节点
+                prev = root;
+                root = null; //必须将root置为null，这样才能继续压栈找到上一节点
+            } else {
+                root = root.right;
+            }
         }
         return resList;
     }
