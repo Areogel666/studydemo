@@ -85,4 +85,38 @@ public class Sort {
         }
         return nums;
     }
+
+    /**
+     * 快速排序
+     * O(nlog(n))
+     * @param nums
+     * @return
+     */
+    public void quickSort(int[] nums, int left, int right) {
+        //分而治之，分区
+        if (left >= right) return; //分区点在左/右数第0，第1个元素的时候，完成左/右半区的分区，之后只进行另外半边的分区操作
+        int lt = partition(nums, left, right); //返回切分元素
+        quickSort(nums, left, lt - 1);
+        quickSort(nums, lt + 1, right);
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        //left最左元素（pivot） right最右元素  i循环指针（比较元素） lt分区指针（分区边界元素，最终与pivot交换）
+        //「大放过，小操作」，也就是说：遇到大于等于的元素就什么都不做，继续遍历，而遇到小的元素，就把它们依次交换到数组的前面去。
+        //如果 i 指向的元素大于等于基准元素 pivot 的时候，什么都不用做；
+        //如果 i 指向的元素小于基准元素 pivot 的时候，lt 先向后移动一位，再与 i 交换，然后 i 再向前移动，这就能保持在循环的过程中，i 和 j 的定义不变。
+        int randomIndex = (int) (left + Math.random() * (right - left + 1)); //基准数取随机数
+        swap(nums, left, randomIndex);
+        int pivot = nums[left];
+        int lt = left;
+        for (int i = left + 1; i <= right; i++) {
+            if (nums[i] < pivot) {//小于分区切分点，需要移动到分区左侧
+                lt++;//分区指针右移一位（指向原来右分区头元素）
+                swap(nums, i, lt);//交换当前遍历元素和原来右分区的头元素
+            }
+        }
+        //最后交换基准元素到分区切分点
+        swap(nums, lt, left);
+        return lt;
+    }
 }
