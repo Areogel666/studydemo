@@ -3,7 +3,9 @@ package com.lxr.studydemo.algorithm.common;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @ClassName String
@@ -23,7 +25,7 @@ public class StringOp {
      * @return
      */
     public int lengthOfLongestSubstring(String s) {
-        //动态规划 + 哈希表  时间复杂度 O(N)  空间复杂度 O(1)
+        //方法一：动态规划 + 哈希表  时间复杂度 O(N)  空间复杂度 O(1)
         Map<Character, Integer> dic = new HashMap<>();
         int res = 0, tmp = 0;
         for(int j = 0; j < s.length(); j++) {
@@ -38,16 +40,19 @@ public class StringOp {
     }
 
     public int lengthOfLongestSubstring2(String s) {
-        //双指针 + 哈希表 时间复杂度 O(N)  空间复杂度 O(1)
-        Map<Character, Integer> dic = new HashMap<>();
-        int i = -1, res = 0;
-        for(int j = 0; j < s.length(); j++) {
-            if(dic.containsKey(s.charAt(j)))
-                i = Math.max(i, dic.get(s.charAt(j))); // 当前字符上一次出现的位置 与 子串左指针比较  更新左指针 i
-            dic.put(s.charAt(j), j); // 哈希表记录
-            res = Math.max(res, j - i); // 更新结果
+        //方法二：滑动窗口 时间复杂度 O(N)  空间复杂度 O(1)
+        Map<Character, Integer> map = new HashMap<>();
+        int j = 0;
+        int maxLength = 0;
+        for (int i = 0; i < s.length();) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) { //包含字符
+                j = Math.max(map.get(c), j);//获得左窗口位置
+            }
+            map.put(c, ++i);//右窗口右移一位
+            maxLength = Math.max(i - j, maxLength);//右窗-左窗获得最大长度
         }
-        return res;
+        return maxLength;
     }
 
     public int lengthOfLongestSubstring3(String s) {
@@ -69,6 +74,40 @@ public class StringOp {
         }
         return res;
     }
+
+    public int lengthOfLongestSubstring4(String s) {
+        //方法三：滑动窗口思想 双指针 考虑用Set存储当前不重复子串
+        //指针i循环遍历s，指针j指向当前不重复子串开始位置
+        Set<Character> set = new HashSet<>();
+        int j = 0;
+        int maxLength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            while (set.contains(c)) { //如果子串有此字符，则删除j指针指向的元素，并右移j指针，直到set不含此字符
+                set.remove(s.charAt(j++));
+            }
+            set.add(c);
+            maxLength = Math.max(maxLength, set.size());
+        }
+        return maxLength;
+    }
+
+    public int lengthOfLongestSubstring5(String s) {
+        //滑动窗口 [j,i]的范围是窗口范围
+        Map<Character, Integer> map = new HashMap<>();
+        int j = 0;
+        int maxLength = 0;
+        for (int i = 0; i < s.length();) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) { //包含字符
+                j = Math.max(map.get(c), j);//获得左窗口位置
+            }
+            map.put(c, ++i);//右窗口右移一位
+            maxLength = Math.max(i - j, maxLength);//右窗-左窗获得最大长度
+        }
+        return maxLength;
+    }
+
 
     @Test
     public void testLengthOfLongestSubstring() {
