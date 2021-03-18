@@ -2,10 +2,7 @@ package com.lxr.studydemo.algorithm.common;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @ClassName String
@@ -111,6 +108,7 @@ public class StringOp {
 
     @Test
     public void testLengthOfLongestSubstring() {
-        System.out.println(lengthOfLongestSubstring3("abcabcbb"));
+        System.out.println(lengthOfLongestSubstring3("abcabcdbb"));
     }
+
 }
