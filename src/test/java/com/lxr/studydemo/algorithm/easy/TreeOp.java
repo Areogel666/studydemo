@@ -496,4 +496,39 @@ public class TreeOp {
         }
         return resList;
     }
+
+    /**
+     * 226. 翻转二叉树
+     * 翻转一棵二叉树。
+     *
+     * 示例：
+     * 输入：
+     *      4
+     *    /   \
+     *   2     7
+     *  / \   / \
+     * 1   3 6   9
+     * 输出：
+     *      4
+     *    /   \
+     *   7     2
+     *  / \   / \
+     * 9   6 3   1
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        invertTreeDfs(root);
+        return root;
+    }
+
+    private void invertTreeDfs(TreeNode node) {
+        if (node == null) return;
+        //左右子节点交换
+        TreeNode temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+        invertTreeDfs(node.left);
+        invertTreeDfs(node.right);
+    }
 }
