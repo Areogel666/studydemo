@@ -1,44 +1,22 @@
 package com.lxr.studydemo.prove;
 
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.Semaphore;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 /**
- * @ClassName BaseProgram
+ * @ClassName MutiThread
  * @Description TODO
  * @Author Areogel
- * @Date 2021/3/9 9:45
+ * @Date 2021/3/22 13:33
  * @Version 1.0
  */
-public class BaseProgram {
-
-    /**
-     * 测试equals
-     * @description
-     * @author Areogel
-     * @date 2021/3/10 12:02
-     */
-    @Test
-    public void testEquals() {
-        Integer a = 128;
-        Integer b = 128;
-        Integer a1 = -128;
-        Integer b1 = -128;
-        String c = "abc";
-        String d = "abc";
-        String e = "155";
-        String f = "155";
-        System.out.println(a == b);
-        System.out.println(a1 == b1);
-        System.out.println(c == d);
-        System.out.println(e == f);
-    }
+@Log4j2
+public class MutiThread {
 
     class User {
         String name;
@@ -54,26 +32,8 @@ public class BaseProgram {
         }
     }
 
-    /**
-     * 测试Stream ListToMap报错
-     * @description
-     * @author Areogel
-     * @date 2021/3/10 12:03
-     */
-    @Test
-    public void testStreamError() {
-        ArrayList<User> list = new ArrayList<>();
-        User jack1 = new User("jack", 20);
-        User jack2 = new User("jack", 24);
-        list.add(jack1);
-        list.add(jack2);
-        Map<String, Integer> collect1 = list.stream().collect(Collectors.toMap(user -> user.name, user -> user.age, Math :: max));
-        //throwingMerger()  java.lang.IllegalStateException: Duplicate key 20
-        Map<String, Integer> collect = list.stream().collect(Collectors.toMap(user -> user.name, user -> user.age));
-        System.out.println(collect.size());
-    }
-
     int count = 0;
+    volatile int count2 = 0;
 
     /**
      * 测试顺序打印数字
@@ -112,19 +72,18 @@ public class BaseProgram {
         }
     }
 
-    volatile int count2 = 0;
     User user = new User("user0", 0);
     @Test
     public void testThreadPrintNumber2() throws InterruptedException {
         //常量类型值传递，每个线程之间不存在共享变量，加volatile没用
-//        Thread t1 = new Thread(() -> printNumber2(count2));
+//        Thread t1 = new Thread(() -> printNumber2(count2)); //打印3遍0-9999
 //        Thread t2 = new Thread(() -> printNumber2(count2));
 //        Thread t3 = new Thread(() -> printNumber2(count2));
-//        Thread t1 = new Thread(() -> printNumber3());  //打印到10001
-//        Thread t2 = new Thread(() -> printNumber3());
-//        Thread t3 = new Thread(() -> printNumber3());
+//        Thread t1 = new Thread(() -> printNumber31());  //打印到9999
+//        Thread t2 = new Thread(() -> printNumber31());
+//        Thread t3 = new Thread(() -> printNumber31());
 
-//        Thread t1 = new Thread(() -> printNumber4(user)); //打印到10001
+//        Thread t1 = new Thread(() -> printNumber4(user)); //引用类型传递，打印到10001
 //        Thread t2 = new Thread(() -> printNumber4(user));
 //        Thread t3 = new Thread(() -> printNumber4(user));
         Thread t1 = new Thread(() -> printNumber5()); //非原子
@@ -154,6 +113,16 @@ public class BaseProgram {
         }
     }
 
+    private void printNumber31() {
+        while (count2 < 10000) {
+            synchronized (this) {
+                if (count2 < 10000) {
+                    System.out.println(count2++);
+                }
+            }
+        }
+    }
+
     private void printNumber4(User user) {
         while (user.age < 10000) {
             synchronized (this) {
@@ -169,7 +138,7 @@ public class BaseProgram {
     }
 
     /**
-     * 测试交替打印ABC
+     * 测试3个线程交替打印ABC
      * @description
      * @author Areogel
      * @date 2021/3/10 12:06
@@ -258,5 +227,94 @@ public class BaseProgram {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 测试死锁
+     * @description
+     * @param
+     * @return
+     */
+    @Test
+    public void testDeathLock() throws InterruptedException {
+        //两个线程持有
+        Object a = new Object();
+        Object b = new Object();
+        Thread t1 = new Thread(() -> {
+            synchronized (a) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (b) {
+                    System.out.println("do A->B");
+                }
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            synchronized (b) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (a) {
+                    System.out.println("do B->A");
+                }
+            }
+        });
+        t1.start();
+        t2.start();
+        t1.join();
+    }
+
+    /**
+     * 测试内存溢出
+     * @param
+     * @return
+     */
+    @Test
+    public void testOutOfMemory() throws InterruptedException {
+        List<String[]> list = new ArrayList<>();
+        while (true) {
+            list.add(new String[102400]);
+            TimeUnit.MILLISECONDS.sleep(100);
+            log.debug("print");
+        }
+    }
+
+    private static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(50, new ThreadPoolExecutor.DiscardOldestPolicy());
+
+    /**
+     * 测试内存泄漏
+     * 不断往线程池放入任务
+     * @param
+     * @return
+     */
+    @Test
+    public void testMemoryLeak() throws InterruptedException {
+        executor.setMaximumPoolSize(50);
+        while (true) {
+            calc();
+            TimeUnit.MILLISECONDS.sleep(100);
+        }
+    }
+
+    private void calc() {
+        List<User> list = getAllUser();
+        list.forEach(user -> {
+            executor.scheduleWithFixedDelay(() -> user.print(), 1, 1, TimeUnit.SECONDS);
+        });
+    }
+
+    private List<User> getAllUser() {
+        //模拟数据库查询
+        List<User> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            User user = new User("name", 1);
+            list.add(user);
+        }
+        return list;
     }
 }
