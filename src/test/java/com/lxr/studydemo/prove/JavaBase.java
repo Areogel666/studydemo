@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 /**
  * @ClassName JavaBase
- * @Description TODO
  * @Author Areogel
  * @Date 2021/3/22 13:32
  * @Version 1.0

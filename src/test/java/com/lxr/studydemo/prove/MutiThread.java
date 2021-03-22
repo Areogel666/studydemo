@@ -10,7 +10,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @ClassName MutiThread
- * @Description TODO
  * @Author Areogel
  * @Date 2021/3/22 13:33
  * @Version 1.0
