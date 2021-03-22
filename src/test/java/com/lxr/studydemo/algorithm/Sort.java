@@ -2,6 +2,7 @@ package com.lxr.studydemo.algorithm;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Sort {
@@ -90,6 +91,8 @@ public class Sort {
      * 快速排序
      * O(nlog(n))
      * @param nums
+     * @param left
+     * @param right
      * @return
      */
     public void quickSort(int[] nums, int left, int right) {
@@ -118,5 +121,41 @@ public class Sort {
         //最后交换基准元素到分区切分点
         swap(nums, lt, left);
         return lt;
+    }
+
+
+    /**
+     * 归并排序
+     * O(nlog(n))
+     * @param nums
+     * @return
+     */
+    public int[] mergeSort(int[] nums) {
+        if (nums == null || nums.length < 2) return nums;
+        //分而治之，两个有序数组，不断归并排序
+        //将数组分为左右两部分
+        int middle = nums.length / 2;
+        int[] left = Arrays.copyOfRange(nums, 0, middle);
+        int[] right = Arrays.copyOfRange(nums, middle, nums.length);
+        //对左右两部分做递归拆分，直到只剩一个元素，然后进行递归合并
+        return merge(mergeSort(left), mergeSort(right));
+    }
+
+    private int[] merge(int[] left, int[] right) {
+        int[] resArray = new int[left.length + right.length];
+        int leftIdx = 0;
+        int rightIdx = 0;
+        for (int i = 0; i < resArray.length; i++) {
+            if (leftIdx == left.length) {// 左边元素已完成排序
+                resArray[i] = right[rightIdx++];
+            } else if (rightIdx == right.length) {// 右边元素已完成排序
+                resArray[i] = left[leftIdx++];
+            } else if (left[leftIdx] <= right[rightIdx]) {//左边元素小，先入数组
+                resArray[i] = left[leftIdx++];
+            } else {
+                resArray[i] = right[rightIdx++];
+            }
+        }
+        return resArray;
     }
 }

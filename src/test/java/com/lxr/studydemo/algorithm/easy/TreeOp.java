@@ -6,7 +6,6 @@ import java.util.*;
 
 /**
  * @ClassName Tree
- * @Description TODO
  * @Author Areogel
  * @Date 2021/3/10 13:13
  * @Version 1.0
@@ -495,5 +494,82 @@ public class TreeOp {
             }
         }
         return resList;
+    }
+
+    /**
+     * 226. 翻转二叉树
+     * 翻转一棵二叉树。
+     *
+     * 示例：
+     * 输入：
+     *      4
+     *    /   \
+     *   2     7
+     *  / \   / \
+     * 1   3 6   9
+     * 输出：
+     *      4
+     *    /   \
+     *   7     2
+     *  / \   / \
+     * 9   6 3   1
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        invertTreeDfs(root);
+        return root;
+    }
+
+    private void invertTreeDfs(TreeNode node) {
+        if (node == null) return;
+        //左右子节点交换
+        TreeNode temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+        invertTreeDfs(node.left);
+        invertTreeDfs(node.right);
+    }
+
+    /**
+     * 110. 平衡二叉树
+     * 给定一个二叉树，判断它是否是高度平衡的二叉树。
+     *
+     * 本题中，一棵高度平衡二叉树定义为：
+     *
+     * 一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
+     * @param root
+	 * @return boolean
+     */
+    public boolean isBalanced(TreeNode root) {
+        //递归比较左右子树高度差 时间复杂度 O(N*N) 空间复杂度 O(N)
+        //自顶向下的递归，每次查询树高，存在重复递归
+        if (root == null) return true;
+        int leftHigh = getTreeHigh(root.left); //左子树高
+        int rightHigh = getTreeHigh(root.right); //右子树高
+        if (leftHigh - rightHigh > 1 || leftHigh - rightHigh < -1) return false; //如果子树高度相差1以上，直接返回false
+        return isBalanced(root.left) && isBalanced(root.right); //分别递归左右子树
+    }
+
+    private int getTreeHigh(TreeNode node) {
+        if (node == null) return 0;
+        return Math.max(getTreeHigh(node.left), getTreeHigh(node.right)) + 1;
+    }
+
+    public boolean isBalanced1(TreeNode root) {
+        //自底向上的递归 时间复杂度 O(N) 空间复杂度 O(N)
+        //后序遍历到底，每次记录树高，如果子树已不平衡返回false，平衡则比较左右子树高度差
+        //由于每次递归返回树高，不会重复查询树高
+        return isChildBalance(root) != -1;
+    }
+
+    //如平衡获得节点树高，不平衡返回-1
+    private int isChildBalance(TreeNode node) {
+        if (node == null) return 0; //如无子节点，返回树高0
+        int left = isChildBalance(node.left); //后序遍历到最左下节点，此时返回left = 0
+        if (left == -1) return -1;
+        int right = isChildBalance(node.right); //后序遍历右节点，获得右子树树高
+        if (right == -1) return -1;
+        return Math.abs(left - right) > 1 ? -1 : Math.abs(left - right) + 1; //如果右子树与左子树高度差大于1，返回-1表示不平衡
     }
 }
