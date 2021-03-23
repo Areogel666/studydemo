@@ -420,7 +420,7 @@ public class TreeOp {
                 stack.push(root);
                 root = root.left;
             }
-            root = stack.pop(); //压栈
+            root = stack.pop(); //弹出栈
             root = root.right; //此时循环上一层右子树
         }
         return resList;
@@ -460,7 +460,7 @@ public class TreeOp {
                 stack.push(root);
                 root = root.right; // 先搜索右下节点
             }
-            root = stack.pop(); //压栈
+            root = stack.pop(); //弹出栈
             root = root.left;
         }
         Collections.reverse(resList);
@@ -482,13 +482,13 @@ public class TreeOp {
                 root = root.left;
             }
             root = stack.peek(); //由于最后打印根，所以只有当节点所有左右子树都搜索完成后才能pop。因此此处使用peek获得栈首元素。
-            //保证右节点为null，此时可存值压栈
+            //保证右节点为null，此时可存值弹出栈
             //注：root.right == prev这个条件，保证右子节点已存储的情况下，直接存储根节点
             if (root.right == null || root.right == prev) {
                 resList.add(root.val);
-                stack.pop(); //此时压栈后，栈中首元素是上一节点
+                stack.pop(); //此时弹出栈后，栈中首元素是上一节点
                 prev = root;
-                root = null; //必须将root置为null，这样才能继续压栈找到上一节点
+                root = null; //必须将root置为null，这样才能继续弹出栈找到上一节点
             } else {
                 root = root.right;
             }
