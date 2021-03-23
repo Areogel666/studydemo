@@ -140,21 +140,27 @@ public class LinkListOp {
     }
 
     public ListNode reverseBetween1(ListNode head, int left, int right) {
-        // 头插法
-        // 设置 dummyNode 是这一类问题的一般做法
+        //头插法：固定当前节点，每次将下一节点插入头部，直到当前节点指向right + 1节点
+        //设置虚拟头结点
         ListNode dummyNode = new ListNode(-1);
         dummyNode.next = head;
-        ListNode pre = dummyNode;
+        //首先找到left前一节点
+        ListNode prev = dummyNode;
+        ListNode cur = null;
         for (int i = 0; i < left - 1; i++) {
-            pre = pre.next;
+            prev = prev.next;
         }
-        ListNode cur = pre.next;
-        ListNode next;
+        //开始头插处理反转链表
+        cur = prev.next; //获得当前节点
+        //循环到right节点完成指针变更
         for (int i = 0; i < right - left; i++) {
-            next = cur.next;
+            ListNode next = cur.next;
+            //将cur指向下下个节点（处理当前节点指向）
             cur.next = next.next;
-            next.next = pre.next;
-            pre.next = next;
+            //将next指向prev.next（处理头插节点指向）
+            next.next = prev.next;
+            //将prev指向next（处理cur上一节点指向）
+            prev.next = next;
         }
         return dummyNode.next;
     }
@@ -228,5 +234,38 @@ public class LinkListOp {
         ListNode node1 = new ListNode(1, node2);
         node4.next = node2;
         System.out.println(hasCycle2(node1));
+    }
+
+    /**
+     * 203. 移除链表元素
+     * 给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val == val 的节点，并返回 新的头节点 。
+     *
+     * 示例 1：
+     * 输入：head = [1,2,6,3,4,5,6], val = 6
+     * 输出：[1,2,3,4,5]
+     *
+     * @param head
+     * @param val
+     * @return com.lxr.studydemo.algorithm.easy.LinkListOp.ListNode
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        //前一节点——>后一节点 当前节点——>null
+        if (head == null) return null;
+        //添加虚拟头节点
+        ListNode dummyNode = new ListNode(-1);
+        dummyNode.next = head;
+        ListNode prev = dummyNode;
+        while (head != null) {
+            if (head.val == val) { //符合条件，进行移除
+                ListNode next = head.next;
+                prev.next = next; //前一节点——>后一节点
+                head.next = null; //（此处可以省略，java垃圾回收会处理不被引用的对象）
+                head = next;
+            } else {
+                prev = head;
+                head = head.next;
+            }
+        }
+        return dummyNode.next;
     }
 }
