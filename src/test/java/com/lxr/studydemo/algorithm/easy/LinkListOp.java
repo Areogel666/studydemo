@@ -140,6 +140,7 @@ public class LinkListOp {
     }
 
     public ListNode reverseBetween1(ListNode head, int left, int right) {
+        // 头插法
         // 设置 dummyNode 是这一类问题的一般做法
         ListNode dummyNode = new ListNode(-1);
         dummyNode.next = head;
