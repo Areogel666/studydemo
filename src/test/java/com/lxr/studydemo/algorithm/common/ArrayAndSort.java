@@ -2,6 +2,8 @@ package com.lxr.studydemo.algorithm.common;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.*;
+
 /**
  * @ClassName ArrayAndSort
  * @Description TODO
@@ -46,5 +48,65 @@ public class ArrayAndSort {
                 ,{18, 21, 23, 26, 30}};
         boolean numberIn2DArray = findNumberIn2DArray(matrix, 87);
         System.out.println(numberIn2DArray);
+    }
+
+    /**
+     * 15. 三数之和
+     * 给你一个包含 n 个整数的数组nums，判断nums中是否存在三个元素 a，b，c ，使得a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+     *
+     * 注意：答案中不可以包含重复的三元组。
+     *
+     * 示例 1：
+     * 输入：nums = [-1,0,1,2,-1,-4]
+     * 输出：[[-1,-1,2],[-1,0,1]]
+     * 示例 2：
+     * 输入：nums = []
+     * 输出：[]
+     * 示例 3：
+     * 输入：nums = [0]
+     * 输出：[]
+     *
+     * @param nums
+	 * @return List<List<Integer>>
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        //注意题目要求不可以包含重复的三元组，此处有两种方式：1.利用哈希表，2.利用排序，跳过重复数字项
+        //此题考虑使用排序，减少循环及空间使用
+        //一个数做循环指针，另外两个数为左右双指针。
+        List<List<Integer>> resList = new ArrayList<>();
+        //特判
+        if (nums == null || nums.length < 3) return resList;
+        //排序
+        Arrays.sort(nums);
+        int left;
+        int right;
+        //循环第一个数，只要保证第一个数不重复
+        for (int i = 0; i < nums.length; i++) {
+            //如果第一个数大于0，则三数和必大于0，直接结束循环
+            if (nums[i] > 0) {
+                break;
+            }
+            //如果第一个数的值重复了，直接跳过
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            left = i + 1;
+            right = nums.length - 1;
+            while (left < right) {
+                //如果满足要求，则left++, right--
+                if (nums[i] + nums[left] + nums[right] == 0) {
+                    resList.add(Arrays.asList(new Integer[]{nums[i], nums[left], nums[right]}));
+                    while (left < right && nums[left] == nums[left + 1]) left++; // 去重
+                    while (left < right && nums[right] == nums[right - 1]) right--; // 去重
+                    left++;
+                    right--;
+                } else if (nums[i] + nums[left] + nums[right] > 0) { //如果大于0，右指针左移
+                    right--;
+                } else if (nums[i] + nums[left] + nums[right] < 0){ //如果小于0，左指针右移
+                    left++;
+                }
+            }
+        }
+        return resList;
     }
 }
