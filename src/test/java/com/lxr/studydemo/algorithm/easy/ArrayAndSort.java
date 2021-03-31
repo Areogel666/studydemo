@@ -56,7 +56,7 @@ public class ArrayAndSort {
      *
      * 给你两个有序整数数组nums1 和 nums2，请你将 nums2 合并到nums1中，使 nums1 成为一个有序数组。
      *
-     * 初始化nums1 和 nums2 的元素数量分别为m 和 n 。你可以假设nums1 的空间大小等于 m + n，这样它就有足够的空间保存来自 nums2 的元素。
+     * 初始化nums1 和 nums2 的元素数量分别为m 和 n 。你可以假设nums1 的空间大小等于m + n，这样它就有足够的空间保存来自 nums2 的元素。
      *
      * @param nums1
      * @param m
@@ -73,7 +73,7 @@ public class ArrayAndSort {
                 nums1[i] = nums2[num2++];
                 continue;
             }
-            if (num2 ==  n) {
+            if (num2 == n) {
                 nums1[i] = array[num1++];
                 continue;
             }
@@ -108,4 +108,105 @@ public class ArrayAndSort {
         merge1(array1, 3, array2, 3);
         Arrays.stream(array1).forEach(System.out::println);
     }
+
+    /**
+     * 剑指 Offer 53 - II. 0～n-1中缺失的数字
+     * 一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。
+     * 在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+     *
+     * @param nums
+	 * @return int
+     */
+    public int missingNumber(int[] nums) {
+        //有序数组查找问题——>考虑二分法
+        if (nums == null || nums.length < 1) return 0;
+        int middle;
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            middle = (left + right) / 2;
+            if (nums[middle] == middle) { //如果第middle个元素取值等于middle，说明[left, middle]没有缺少数字，则继续搜寻后半
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        //当循环结束时，left就是缺失数字
+        return left;
+    }
+
+    public int missingNumber1(int[] nums) {
+        //取巧方式，由于是递增数列，因此可以利用等差数列前n项和-数组之和
+        if (nums == null || nums.length < 1) return 0;
+        int length = nums.length;
+        int total = (0 + length) * (length + 1) / 2; // (首项 + 尾项) * 项数 / 2
+        int res = total;
+        for (int i = 0; i < nums.length; i++) {
+            res -= nums[i];
+        }
+        return res;
+    }
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+     *
+     * 示例 1:
+     * 输入: [3,2,1,5,6,4] 和 k = 2
+     * 输出: 5
+     * 示例2:
+     * 输入: [3,2,3,1,2,4,5,5,6] 和 k = 4
+     * 输出: 4
+     *
+     * @param nums
+     * @param k
+     * @return int
+     */
+    public int findKthLargest(int[] nums, int k) {
+        //借用快速排序思想
+        //每次分区后可以确定切分点的最终位置，查找第k大元素相当于返回切分点等于nums.length - k（倒数第k）时，nums[lt]的值
+        int left = 0;
+        int right = nums.length - 1;
+        while (true) {
+            int lt = partition(nums, left, right);
+            if (lt == nums.length - k) { //倒数第k个位置的切分点元素就是结果
+                return nums[lt];
+            }
+            if (lt < nums.length - k) { //切分点小，则继续对大于切分点元素做分区
+                left = lt + 1;
+            } else { //切分点大，则继续对小于切分点元素做分区
+                right = lt - 1;
+            }
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        //获取随机基准数
+        int randomIndex = left + (int) Math.random() * (right - left + 1);
+        //交换基准数至最左
+        swap(nums, left, randomIndex);
+        int pivot = nums[left];
+        int lt = left;
+        for (int i = left + 1; i <= right; i++) {
+            //大放过，小交换
+            if (nums[i] < pivot) {
+                lt++;
+                swap(nums, i, lt);
+            }
+        }
+        //最后确定pivot位置在lt
+        swap(nums, left, lt);
+        return lt;
+    }
+
+    private void swap(int[] nums, int index1, int index2) {
+        /*//无临时变量交换
+        nums[index1] = nums[index1] + nums[index2];
+        nums[index2] = nums[index1] - nums[index2];
+        nums[index1] = nums[index1] - nums[index2];*/
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+
 }
