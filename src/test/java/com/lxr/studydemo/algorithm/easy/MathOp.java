@@ -2,6 +2,7 @@ package com.lxr.studydemo.algorithm.easy;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -174,7 +175,6 @@ public class MathOp {
         return x == revertedNumber || x == revertedNumber / 10;
     }
 
-
     @Test
     public void testIsPalindrome() {
         System.out.println(isPalindrome(1432341));
@@ -228,4 +228,54 @@ public class MathOp {
         return r;
     }
 
+    /**
+     * 69. x 的平方根
+     * 实现int sqrt(int x)函数。
+     * 计算并返回x的平方根，其中x 是非负整数。
+     * 由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+     *
+     * 示例 1:
+     *
+     * 输入: 4
+     * 输出: 2
+     * 示例 2:
+     *
+     * 输入: 8
+     * 输出: 2
+     * 说明: 8 的平方根是 2.82842...,
+     * 由于返回类型是整数，小数部分将被舍去。
+     * @param x
+     * @return
+     */
+    public int mySqrt(int x) {
+        //二分查找：搜索mid^2 == x
+        int low = 0, high = x, res = -1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if ((long)mid * mid <= x) { //(long)保证mid平方不溢出
+                res = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return res;
+    }
+
+    public String mySqrt1(int x) {
+        // 牛顿迭代法 此处附加要求保留4位小数
+        if (x == 0) {
+            return "0.0000";
+        }
+        double C = x, res = x;
+        while (true) {
+            double xi = 0.5 * (res + C / res); // xi = (xi+C/xi)/2
+            if (Math.abs(res - xi) < 1e-7) { //如果两次迭代差值很小，说明非常接近根的值，则可以返回根的近似值
+                break;
+            }
+            res = xi; //设置当前结果
+        }
+        // 返回值保留4位小数
+        return new BigDecimal(res).setScale(4, BigDecimal.ROUND_HALF_UP).toString();
+    }
 }
