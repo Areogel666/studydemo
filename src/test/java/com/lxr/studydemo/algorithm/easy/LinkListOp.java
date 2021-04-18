@@ -2,7 +2,9 @@ package com.lxr.studydemo.algorithm.easy;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -290,5 +292,31 @@ public class LinkListOp {
             }
         }
         return dummyNode.next;
+    }
+
+    /**
+     * 160. 相交链表
+     * 编写一个程序，找到两个单链表相交的起始节点。
+     *
+     * 如果两个链表没有交点，返回 null.
+     * 在返回结果后，两个链表仍须保持原有的结构。
+     * 可假定整个链表结构中没有循环。
+     * 程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
+     *
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        //注：此处的相交链表特点是相交后不在分开，且每个节点值不同，即相交后两个链表共用同一链表
+        //用两个指针，分别按AB遍历和按BA遍历，由于相交后共用同一链表，因此只用判断两个指针指向的节点值是否相同就能找到相交的起始节点
+        ListNode nodeA = headA;
+        ListNode nodeB = headB;
+        //当nodeA == nodeB时，说明相交或完成两次遍历
+        while (nodeA != nodeB) {
+            nodeA = nodeA != null ? nodeA.next : headB;
+            nodeB = nodeB != null ? nodeB.next : headA;
+        }
+        return nodeA;
     }
 }
