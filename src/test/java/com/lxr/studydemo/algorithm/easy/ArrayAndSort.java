@@ -358,4 +358,54 @@ public class ArrayAndSort {
         }
         return res;
     }
+
+    /**
+     * 剑指 Offer 29. 顺时针打印矩阵
+     * 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+     *
+     * 示例 1：
+     *
+     * 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：[1,2,3,6,9,8,7,4,5]
+     * 示例 2：
+     *
+     * 输入：matrix =[[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+     * 输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+     *
+     * @param matrix
+	 * @return int[]
+     * @author Areogel
+     * @date 2021/4/22 17:09
+     */
+    public int[] spiralOrder(int[][] matrix) {
+        // 模拟 设定边界
+        if (matrix == null || matrix.length == 0) return new int[0];
+        int left = 0, right = matrix[0].length - 1, top = 0, bottom = matrix.length - 1;
+        int x = 0;
+        int[] res = new int[matrix[0].length * matrix.length];
+        // 1.首先从matrix[top][left]遍历到matrix[top][right]，然后top++
+        // 2.从matrix[top][right]遍历到matrix[bottom][right]，然后right--
+        // 3.从matrix[bottom][right]遍历到matrix[bottom][left]，然后bottom--
+        // 4.从matrix[bottom][left]遍历到matrix[top][left]，然后left++
+        // 边界：如果left和right、top和bottom相交，则说明遍历完毕
+        while (true) {
+            for (int i = left; i <= right; i++) {
+                res[x++] = matrix[top][i];
+            }
+            if (++top > bottom) break;
+            for (int i = top; i <= bottom; i++) {
+                res[x++] = matrix[i][right];
+            }
+            if (--right < left) break;
+            for (int i = right; i >= left; i--) {
+                res[x++] = matrix[bottom][i];
+            }
+            if (--bottom < top) break;
+            for (int i = bottom; i >= top; i--) {
+                res[x++] = matrix[i][left];
+            }
+            if (++left > right) break;
+        }
+        return res;
+    }
 }
