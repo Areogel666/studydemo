@@ -408,4 +408,82 @@ public class ArrayAndSort {
         }
         return res;
     }
+
+    /**
+     * 283. 移动零
+     * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+     *
+     * 示例:
+     * 输入: [0,1,0,3,12]
+     * 输出: [1,3,12,0,0]
+     *
+     * @param nums
+     * @return
+     */
+    public void moveZeroes(int[] nums) {
+        // 双指针，一个指针寻找0，一个指针遍历数组
+        // 当遍历到不为0的数字时，与指向0位置交换。通过这样的操作把0逐渐移到末尾
+        int j = -1; // 开始未找到0的位置
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0 && j >= 0) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                j++; //交换后，j++位置的数字一定是0，所以将指针右移一位
+            } else if (nums[i] == 0 && j < 0) {
+                j = i;
+            }
+        }
+    }
+
+    public void moveZeroes1(int[] nums) {
+        if(nums==null) {
+            return;
+        }
+        //第一次遍历的时候，j指针记录非0的个数，只要是非0的统统都赋给nums[j]
+        int j = 0;
+        for(int i=0;i<nums.length;++i) {
+            if(nums[i]!=0) {
+                nums[j++] = nums[i];
+            }
+        }
+        //非0元素统计完了，剩下的都是0了
+        //所以第二次遍历把末尾的元素都赋为0即可
+        for(int i=j;i<nums.length;++i) {
+            nums[i] = 0;
+        }
+    }
+
+    /**
+     * 剑指 Offer 03. 数组中重复的数字
+     * 找出数组中重复的数字。
+     *
+     * 在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。
+     *
+     * 示例 1：
+     * 输入：
+     * [2, 3, 1, 0, 2, 5, 3]
+     * 输出：2 或 3
+     * @param nums
+	 * @return int
+     */
+    public int findRepeatNumber(int[] nums) {
+        // 通常思路会创建一个hash集合存储比较，空间复杂度O(n)
+        // 由于题目中nums里所有数字在 0～n-1 的范围内，
+        // 所以可以把数字nums[i]交换到对应的i位置，如果i位置已存在i==nums[i]，则找到重复数字
+        if (nums == null) return -1;
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] != i) { //当前i放置的数字不匹配时
+                if (nums[i] == nums[nums[i]]) { //如果此数字已被放置到正确位置，说明是重复数字
+                    return nums[i];
+                }
+                // 把nums[i]放到它对应的位置上去
+                int temp = nums[i];
+                nums[i] = nums[nums[i]];
+                nums[temp] = temp; //注意此处写法
+            }
+        }
+        return -1;
+    }
+
 }
