@@ -2,10 +2,7 @@ package com.lxr.studydemo.algorithm.easy;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @ClassName LinkList
@@ -361,4 +358,36 @@ public class LinkListOp {
         }
         return dummyNode.next;
     }
+
+    @Test
+    public void testInsert(){
+        int[] base = new int[30];
+        for(int i=0;i<30;i++){
+            base[i]=-1;
+        }
+        int[] target = {2,0,3,7,4};
+        int[] ints = insertArray(base, target);
+        Arrays.stream(ints).forEach(System.out::println);
+    }
+
+    public int[] insertArray(int[] base, int[] target){
+        int[] res = new int[base.length + target.length]; //创建新数组
+        Arrays.sort(target);
+        int baseIdx = 0; //原数组指针
+        int targetIdx = 0; //插入数组指针
+        for (int i = 0; i < res.length; i++) {
+            if (baseIdx >= base.length) { //不考虑插入数组超过原数组的情况
+//                res[i] = target[targetIdx++];
+            } else if (targetIdx >= target.length) { //如果插入数组遍历完，直接插入原数组
+                res[i] = base[baseIdx++];
+            } else if (i < target[targetIdx]) { //如果插入位置比target目标小，则插入原数组
+                res[i] = base[baseIdx++];
+            } else { //插入目标值
+                res[target[targetIdx]] = target[targetIdx];
+                targetIdx++;
+            }
+        }
+        return res;
+    }
+
 }
