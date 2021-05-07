@@ -1,26 +1,5 @@
-2020-08-14 15:29:35.274  INFO 3284 --- [main] com.lxr.studydemo.StudydemoApplication   : Starting StudydemoApplication on LAPTOP-EOJ0VOHH with PID 3284 (D:\MyCode\studydemo\target\classes started by lenovo in D:\MyCode\studydemo)
-2020-08-14 15:29:35.281  INFO 3284 --- [main] com.lxr.studydemo.StudydemoApplication   : No active profile set, falling back to default profiles: default
-2020-08-14 15:29:36.282  INFO 3284 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
-2020-08-14 15:29:36.291  INFO 3284 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2020-08-14 15:29:36.292  INFO 3284 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
-2020-08-14 15:29:36.425  INFO 3284 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2020-08-14 15:29:36.425  INFO 3284 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1096 ms
-2020-08-14 15:29:36.837  INFO 3284 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2020-08-14 15:29:36.992  INFO 3284 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
-2020-08-14 15:29:37.001  INFO 3284 --- [main] com.lxr.studydemo.StudydemoApplication   : Started StudydemoApplication in 2.289 seconds (JVM running for 5.033)
-2020-08-14 15:29:42.326  INFO 3284 --- [http-nio-8090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-08-14 15:29:42.326  INFO 3284 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-08-14 15:29:42.332  INFO 3284 --- [http-nio-8090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
-2020-08-14 15:29:53.190  INFO 12116 --- [main] com.lxr.studydemo.StudydemoApplication   : Starting StudydemoApplication on LAPTOP-EOJ0VOHH with PID 12116 (D:\MyCode\studydemo\target\classes started by lenovo in D:\MyCode\studydemo)
-2020-08-14 15:29:53.193  INFO 12116 --- [main] com.lxr.studydemo.StudydemoApplication   : No active profile set, falling back to default profiles: default
-2020-08-14 15:29:54.487  INFO 12116 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8090 (http)
-2020-08-14 15:29:54.498  INFO 12116 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2020-08-14 15:29:54.499  INFO 12116 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
-2020-08-14 15:29:54.670  INFO 12116 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2020-08-14 15:29:54.670  INFO 12116 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1417 ms
-2020-08-14 15:29:55.344  INFO 12116 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2020-08-14 15:29:55.671  INFO 12116 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8090 (http) with context path ''
-2020-08-14 15:29:55.686  INFO 12116 --- [main] com.lxr.studydemo.StudydemoApplication   : Started StudydemoApplication in 3.136 seconds (JVM running for 6.88)
-2020-08-14 15:30:07.464  INFO 12116 --- [http-nio-8090-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-08-14 15:30:07.464  INFO 12116 --- [http-nio-8090-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-08-14 15:30:07.470  INFO 12116 --- [http-nio-8090-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2021-04-21 16:10:44.092  INFO 13952 --- [main] c.l.studydemo.StudydemoApplicationTests  : Starting StudydemoApplicationTests on LAPTOP-EOJ0VOHH with PID 13952 (started by lenovo in D:\MyCode\studydemo)
+2021-04-21 16:10:44.114  INFO 13952 --- [main] c.l.studydemo.StudydemoApplicationTests  : No active profile set, falling back to default profiles: default
+2021-04-21 16:10:52.464  INFO 13952 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-04-21 16:10:54.685  INFO 13952 --- [main] c.l.studydemo.StudydemoApplicationTests  : Started StudydemoApplicationTests in 12.104 seconds (JVM running for 17.35)
+2021-04-21 16:10:55.736  INFO 13952 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
